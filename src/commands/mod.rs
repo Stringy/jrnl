@@ -38,22 +38,18 @@ impl Command for AddCommand {
     }
 
     fn run(&self, args: Vec<String>) {
-        let mut filename: &str;
-        if args.len() == 1 {
-            filename = &args[0];
-        } else {
-            filename = "entry";
-        }
 
-        let now = time::now();
-        let stamp = format!("{}/{}/{}/{}.md", now.tm_year, now.tm_mon, now.tm_mday, filename);
+        let now  = time::now();
+        let year = now.tm_year + 1900;
+        let dirs = format!("./{}/{}", year, now.tm_mon + 1);
+        let stamp = format!("{}/{}.md", dirs, now.tm_mday);
         println!("{}\n", stamp);
+
+        fs::create_dir_all(dirs);
 
         process::new("vim").arg(stamp).status().unwrap_or_else(|e| {
             panic!("failed to run vim {}", e)
         });
-
-        // let attr = try!(fs::metadata(stamp));
     }
 
 }
