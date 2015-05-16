@@ -13,10 +13,11 @@ type command interface {
 }
 
 var Commands = map[string]command{
-	"init":  cmdInit,
-	"add":   cmdAdd,
-	"serve": cmdServe,
-	"pack":  cmdPack,
+	"init": cmdInit,
+	"add":  cmdAdd,
+	"help": cmdHelp,
+	//	"serve": cmdServe,
+	//	"pack":  cmdPack,
 }
 
 func handle(err error) {

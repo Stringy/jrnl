@@ -1,4 +1,4 @@
-package main
+package commands
 
 import (
 	"fmt"
@@ -23,13 +23,13 @@ func (h *HelpCommand) Do(args []string) error {
 	if len(args) == 0 {
 		fmt.Println("Journal - journaling management software")
 		fmt.Println("\nCommands:")
-		for key, val := range cmds {
+		for key, val := range Commands {
 			fmt.Printf("  %s: %s\n", key, val.Desc())
 		}
 		fmt.Println("For specific help, use \"journal help <cmd>\"")
 	} else {
-		if _, ok := cmds[args[0]]; ok {
-			fmt.Println(cmds[args[0]].LongUse())
+		if _, ok := Commands[args[0]]; ok {
+			fmt.Println(Commands[args[0]].LongUse())
 		}
 	}
 

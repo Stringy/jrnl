@@ -1,7 +1,9 @@
-package main
+package commands
 
 import (
 	"fmt"
+	"journal/core"
+	"journal/crypto"
 	"os"
 )
 
@@ -13,9 +15,10 @@ type InitCommand struct {
 }
 
 var cmdInit = &InitCommand{
-	name: "init",
-	desc: "initialises a journal within a directory",
-	longuse: ` 
+	name:  "init",
+	desc:  "initialises a journal within a directory",
+	usage: "journal init /path/to/file",
+	longuse: `
   journal init
 
   initialises a journal within the current directory 
@@ -23,21 +26,15 @@ var cmdInit = &InitCommand{
 }
 
 func (i *InitCommand) Do(args []string) error {
-	if len(args) != 0 {
-		fmt.Println("Usage:", os.Args[0], "init")
+
+	if len(args) != 1 {
+		fmt.Println(i.usage)
 		os.Exit(1)
 	}
 
-	err := os.Mkdir(".jrnl", os.FileMode(0700))
-	if err != nil {
-		if os.IsExist(err) {
-			fmt.Println("journal: already initialised")
-		} else {
-			return err
-		}
-	}
-
-	return nil
+	pass := crypto.PromptForNewPassword()
+	jrnl := core.NewJournal(args[0], &pass)
+	return jrnl.Save()
 }
 
 func (i *InitCommand) Name() string    { return i.name }

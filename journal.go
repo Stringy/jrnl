@@ -1,25 +1,21 @@
 package main
 
 import (
+	"journal/commands"
 	"os"
 )
 
 func main() {
 
-	getDirStructure()
-
 	if len(os.Args) < 2 {
-		cmdHelp.Do([]string{})
+		commands.Commands["help"].Do(os.Args)
 		os.Exit(0)
 	}
 
-	if _, ok := cmds[os.Args[1]]; ok {
-		err := cmds[os.Args[1]].Do(os.Args[2:])
-		handle(err)
-	} else {
-		if os.Args[1] == "help" {
-			err := cmdHelp.Do(os.Args[2:])
-			handle(err)
+	if _, ok := commands.Commands[os.Args[1]]; ok {
+		err := commands.Commands[os.Args[1]].Do(os.Args[2:])
+		if err != nil {
+			panic(err)
 		}
 	}
 }
