@@ -1,7 +1,0 @@
-[package]
-name = "journal"
-version = "0.0.1"
-authors = ["Giles Hutton <hutton.giles@gmail.com>"]
-
-[dependencies]
-time = "0.1"

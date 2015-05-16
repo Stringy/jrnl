@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/res/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/res/css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+  </head>
+
+  <body>
+
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+    <div id="sidebar-wrapper" class="well">
+      <div style="height: 100%; overflow-y: scroll;">
+        <ul class="sidebar-nav nav nav-list">
+          <li class="sidebar-brand">
+            <a href="#">
+              Journal Entries
+            </a>
+          </li> 
+	  {{ range $year := .Years }}
+	  <li><label class="tree-toggler nav-header">{{ $year.Name }}</label>
+	    <ul class="nav nav-list tree">
+	      {{ range $month := .Months }}
+	      <li> <label class="tree-toggler nav-header">{{ $month.Name }}</label>
+		<ul class="nav nav-list tree">
+		  {{ range $day := .Days }}
+		  <li> <label class="tree-toggler nav-header">{{ $day.Name }}</label>
+		    <ul class="nav nav-list tree">
+		      {{ range $entry := .Entries }}
+		      <li><a href="/{{ $year.Name }}/{{ $month.Name }}/{{ $day.Name }}/{{ .Name }}">{{ .Name }}</a></li>
+		      {{ end }} 
+		    </ul>
+		  </li>
+		  {{ end }} 
+		</ul>
+	      </li> 
+	      <li class="divider"></li>
+	      {{ end }} 
+	    </ul>
+	  </li>
+	  <li class="divider"></li>
+	  {{ end }} 
+        </ul>
+      </div>
+    </div>
+      <!-- /#sidebar-wrapper -->
+
+      <!-- Page Content -->
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+             <!-- <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a> -->
+	      <p> {{ .Markdown }} </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="/res/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/res/js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+      $(document).ready(function () {
+      $('label.tree-toggler').click(function () {
+      $(this).parent().children('ul.tree').toggle(300);
+      });
+      });
+      $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+      });
+    </script>
+
+  </body>
+
+</html>
