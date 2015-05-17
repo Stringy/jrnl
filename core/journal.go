@@ -3,6 +3,7 @@ package core
 import (
 	"compress/gzip"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"journal/crypto"
 	"os"
@@ -49,6 +50,7 @@ func (j *Journal) Init(path string, pass *crypto.Password) error {
 		return err
 	}
 
+	j.nonce = make([]byte, 12)
 	copy(j.nonce, buf[:12])
 	j.pass = pass
 	j.path = path
@@ -62,6 +64,7 @@ func (j *Journal) Save() error {
 		return err
 	}
 
+	fmt.Println(len(j.nonce))
 	enc, err := crypto.Encrypt(buf, j.nonce, j.pass)
 	if err != nil {
 		return err

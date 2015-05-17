@@ -28,6 +28,7 @@ func handle(err error) {
 
 var (
 	ErrNotJournal = errors.New("journal: can't interact with an uninitialised directory")
+	ErrArgs       = errors.New("journal: invalid arguments")
 )
 
 // Ideas
