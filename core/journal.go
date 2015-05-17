@@ -10,7 +10,7 @@ import (
 )
 
 type Journal struct {
-	Entries []JournalEntry
+	Entries map[string]JournalEntry
 	pass    *crypto.Password
 	nonce   []byte
 	path    string
@@ -27,10 +27,17 @@ func NewJournal(path string, pass *crypto.Password) *Journal {
 		panic(err)
 	}
 	return &Journal{
-		Entries: make([]JournalEntry, 0),
+		Entries: make(map[string]JournalEntry),
 		pass:    pass,
 		nonce:   nonce,
 		path:    path,
+	}
+}
+
+func (j *Journal) PutEntry(name, content string) {
+	j.Entries[name] = JournalEntry{
+		Name:    name,
+		Content: content,
 	}
 }
 

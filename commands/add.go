@@ -38,21 +38,26 @@ func (a *AddCommand) Do(args []string) error {
 		return err
 	}
 
-	b, err := vipe()
+	now := time.Now()
+	name := fmt.Sprintf("%d/%d/%d", now.Year(), now.Month(), now.Day())
+
+	var b []byte
+	if _, ok := jrnl.Entries[name]; ok {
+		b, err = vipe(jrnl.Entries[name].Content)
+	} else {
+		b, err = vipe("")
+	}
 	if err != nil {
 		return err
 	}
 
-	now := time.Now()
-	name := fmt.Sprintf("%d/%d/%d", now.Year(), now.Month(), now.Day())
-
-	jrnl.Entries = append(jrnl.Entries, core.JournalEntry{Name: name, Content: string(b)})
+	jrnl.PutEntry(name, string(b))
 	return jrnl.Save()
 }
 
 // vipe will act as the intermediary between $EDITOR and this program.
 // based on https://github.com/madx/moreutils/blob/master/vipe
-func vipe() ([]byte, error) {
+func vipe(current string) ([]byte, error) {
 	editor := os.Getenv("EDITOR")
 	if editor == "" {
 		editor = "vi"
@@ -68,6 +73,11 @@ func vipe() ([]byte, error) {
 			panic(err)
 		}
 	}()
+
+	_, err = file.Write([]byte(current))
+	if err != nil {
+		return nil, err
+	}
 
 	//fmt.Println(file.Name())
 

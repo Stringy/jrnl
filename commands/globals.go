@@ -16,6 +16,7 @@ var Commands = map[string]command{
 	"init": cmdInit,
 	"add":  cmdAdd,
 	"help": cmdHelp,
+	"list": cmdList,
 	//	"serve": cmdServe,
 	//	"pack":  cmdPack,
 }
